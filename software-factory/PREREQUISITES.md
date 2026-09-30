@@ -24,6 +24,11 @@ Browser control, MCP services, extra planning skills and media capture are optio
 unless the target task or project requires them. Physical-device access is never
 implied by factory invocation or by a tool being available.
 
+For Pi without a delegation integration, see
+[the optional independent-reviewer setup](references/pi-review.md). It supplies
+the mechanism, not the external review instructions or proof of a completed
+review. Other harnesses need their own compatible mechanism.
+
 ## Missing prerequisites
 
 Disclose known gaps before starting implementation so the user can decide whether

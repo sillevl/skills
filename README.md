@@ -205,7 +205,9 @@ review skill requires a fixed comparison point, a requirements source and
 parallel sub-agent capability, and includes project issue-tracker setup guidance.
 Read its installed instructions for current prerequisites. If the harness cannot
 perform the required review, the factory reports the gap and asks for direction.
-It does not fabricate an independent review or silently replace it.
+It does not fabricate an independent review or silently replace it. For Pi,
+[the optional reviewer setup](software-factory/references/pi-review.md) explains
+how to enable its official subagent extension with a read-only reviewer profile.
 
 Removal or update commands for this collection's five skills below do not remove
 or update this external dependency. Review dependency updates separately.
