@@ -1,22 +1,19 @@
-# Personal skills
+# Skills
 
-Sille's personal collection of agent skills and workflows. It started as a fork
-of [michaelshimeles/skills](https://github.com/michaelshimeles/skills), adapted
-through experiments with the Helios Lite firmware project.
+A collection of reusable agent skills and workflows, derived from
+[michaelshimeles/skills](https://github.com/michaelshimeles/skills).
 
 The `software-factory` skill is the manual entry point for the delivery workflow.
-Other personal skills can be added independently. External collections, such as
-Matt Pocock's skills, can remain installed from their original sources.
+Other skills can be added independently. External collections can remain
+installed from their original sources.
 
 The goal is repeatable delivery with clear human involvement. The workflow is independent of model and coding-agent harness. OpenAI, Anthropic and other model choices follow the same delivery rules. Harness-specific instructions belong in separate sections, starting with Pi.
-
-For firmware work, the name is **Agent-Assisted Firmware Delivery Workflow**, or **Helios Delivery Workflow** for short. "Software-factory experiment" describes the broader ambition, not a claim that delivery is fully autonomous.
 
 Each skill is a folder containing `SKILL.md` with frontmatter and instructions, using the [Agent Skills format](https://agentskills.io/specification). Discovery, automatic loading and command syntax depend on the harness.
 
 ## Scope of this fork
 
-The workflow separates a generic core from Pi-specific usage and preserves upstream attribution. Worktree handling depends on the workspace capabilities actually provided, not a particular harness or model name. The agent verifies an assigned task workspace or creates one when none is provided.
+The workflow is opt-in through the manual `software-factory` skill. Ordinary requests, including edits to this repository, do not activate its task-branch or worktree requirements. Within the selected workflow, worktree handling depends on the workspace capabilities actually provided, not a particular harness or model name.
 
 The web screenshot-comparison skill and its upload scripts have been removed. Evidence should fit the change: test output, serial logs, protocol traces, terminal captures or hardware observations. A screenshot comparison table is not a required delivery artifact.
 
@@ -61,13 +58,11 @@ The skill name is retained for continuity, but screen recording, browser-capture
 
 ### [new-feature](new-feature/SKILL.md)
 
-Starts a task in an isolated Git worktree after searching the project's instructions and development documentation for branching policy. It states the starting base and PR target before creating the workspace, defaults to `origin/main` and a PR to `main` when no policy or override exists, and asks when selection is ambiguous or depends on an unmerged feature. It also covers unique task naming, risk-based overlap assessment, integration responsibility, dependency setup and cleanup after merge. See its [overlap rules](new-feature/SKILL.md#overlap-assessment); shared filenames alone no longer block work.
+The manual-only isolation stage of an explicitly selected `software-factory` workflow. It starts a task in an isolated Git worktree after searching the project's instructions and development documentation for branching policy. It states the starting base and PR target before creating the workspace, defaults to `origin/main` and a PR to `main` when no policy or override exists, and asks when selection is ambiguous or depends on an unmerged feature. It also covers unique task naming, risk-based overlap assessment, integration responsibility, dependency setup and cleanup after merge. See its [overlap rules](new-feature/SKILL.md#overlap-assessment); shared filenames alone no longer block work.
 
-Use it when:
-
-- Starting any new feature, fix, or task, before writing code
-- Multiple agents (or sessions) work the same repository concurrently
-- You need a consistent branch-per-task convention with safe cleanup
+The factory reads this skill during its isolation stage. It is not an automatic
+trigger for new features or ordinary repository work. Invoking the component
+alone does not authorize its isolation stage outside the factory workflow.
 
 The skill verifies workspace assignment, branch policy and ownership before creating isolation. If an isolated task worktree is already supplied, it preserves that workspace and leaves harness-managed cleanup to the harness. Otherwise, the agent creates and manages its own task worktree. Isolated edits do not eliminate integration conflicts between branches.
 
@@ -84,7 +79,7 @@ Use it when:
 
 ## Workflow
 
-[`software-factory/WORKFLOW.md`](software-factory/WORKFLOW.md) is the authoritative workflow for this collection; [`AGENTS.md`](AGENTS.md) points to it for repository work. It connects isolate (`new-feature`), build (`code-structure`), prove (`evidence-driven-testing`) and ship with a verification summary and PR handoff, with `unslop` for human-facing text. Project review and merge requirements still apply; opening a PR is not review approval.
+[`software-factory/WORKFLOW.md`](software-factory/WORKFLOW.md) is the authoritative workflow for this collection; [`AGENTS.md`](AGENTS.md) makes its activation explicitly opt-in, including for repository work. It connects isolate (`new-feature`), build (`code-structure`), prove (`evidence-driven-testing`) and ship with a verification summary and PR handoff, with `unslop` for human-facing text. Project review and merge requirements still apply; opening a PR is not review approval.
 
 To use it in another project, reference or adapt it alongside that project's existing instructions. Keep project architecture and safety rules authoritative rather than replacing them with this file. Read the workflow and relevant skills instead of pasting an older upstream prompt into each task.
 
@@ -112,7 +107,7 @@ npx skills add . --global --agent pi --skill \
 Or supply the checkout's absolute path from any directory:
 
 ```bash
-npx skills add /home/sille/work/ecofix/skills \
+npx skills add /path/to/skills \
   --global --agent pi --skill \
   software-factory new-feature code-structure evidence-driven-testing unslop
 ```
@@ -208,12 +203,11 @@ update has been performed.
 
 ### Pi-specific usage
 
-Pi can discover user-level skills under `~/.agents/skills/` and project skills under `.agents/skills/`. Project discovery stops at the Git repository root, so a sibling clone is not automatically an installed skill collection. Keep personal skills at user level if they must also be available in new worktrees.
+Pi can discover user-level skills under `~/.agents/skills/` and project skills under `.agents/skills/`. Project discovery stops at the Git repository root, so a sibling clone is not automatically an installed skill collection. Use user-level installation when skills must also be available in new worktrees.
 
 Invoke a discovered skill explicitly with Pi's command syntax:
 
 ```text
-/skill:new-feature <task>
 /skill:code-structure <design question>
 ```
 
@@ -223,7 +217,7 @@ Start the complete workflow manually:
 /skill:software-factory Implement <feature and acceptance criteria>
 ```
 
-The entry point is explicit-only. Component skills retain their existing invocation settings; calling a component alone does not start the complete workflow. Run `/reload` after changing installed skills. Other supporting harnesses use their own explicit invocation syntax.
+The entry point and `new-feature` isolation component are manual-only. Task branches and worktrees are required by this collection only within the explicitly selected factory workflow. Other component skills retain their existing invocation settings; calling a component alone does not start the complete workflow. Run `/reload` after changing installed skills. Other supporting harnesses use their own explicit invocation syntax.
 
 If the skill is not installed, explicitly ask the agent to follow `software-factory/SKILL.md` in this checkout. It reads the same bundled rules; there is no need to paste the workflow into your prompt.
 

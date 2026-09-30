@@ -1,11 +1,17 @@
 ---
 name: new-feature
-description: Start a new task in an isolated Git worktree after resolving the project's branching policy, starting base and PR target. Use at the beginning of every new feature, fix, or task before writing code.
+description: Isolation stage of the explicitly selected software-factory workflow. Resolve branching policy and verify or create its task workspace.
+disable-model-invocation: true
 ---
 
-# New Feature
+# New feature
 
-Every task gets its own worktree and task branch. Resolve the starting base and
+Apply this isolation stage only within an explicitly selected `software-factory`
+workflow. Reading this file as reference or invoking this component alone does
+not activate the full workflow. Outside that workflow, do not create task branches
+or worktrees based on this skill; follow the user's request and project policy.
+
+Within the selected workflow, every task gets its own worktree and task branch. Resolve the starting base and
 PR target before creating it. Work on the task branch rather than directly on
 an integration branch, and never reuse another agent's workspace.
 

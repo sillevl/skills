@@ -1,19 +1,23 @@
-# Working on personal skills
+# Working on this collection
 
-This repository contains Sille's personal skills and workflows. The delivery
+This repository contains reusable agent skills and workflows. The delivery
 workflow originated as an adaptation of
 [michaelshimeles/skills](https://github.com/michaelshimeles/skills).
 
-Before changing this collection, read
-[the maintained workflow](software-factory/WORKFLOW.md) and the component skills
-affected by the task. The bundled workflow is the single source of delivery
-rules; this file is the repository entry point, not a second copy.
+For ordinary work in this repository, read the skill files affected by the task
+as reference. Editing a skill does not activate it. Preserve the user's current
+workspace and uncommitted work; this repository does not require automatic task
+branches or worktrees.
 
-For consuming projects, the full workflow is opt-in through the manual
-`software-factory` skill or an explicit request to follow it. Installing this
-collection does not replace another project's `AGENTS.md` or grant permissions.
-Keep project-specific architecture, branch policy and test permissions in that
-project's own documents.
+Apply [the delivery workflow](software-factory/WORKFLOW.md) only when the user
+explicitly invokes the `software-factory` skill or asks for it by name. Its
+isolation and delivery stages are not default repository behavior. A request to
+edit workflow files is not an invocation of the workflow.
+
+The bundled workflow is the single source of delivery rules when selected.
+Installing this collection does not replace another project's `AGENTS.md` or
+grant permissions. Keep project-specific architecture, branch policy and test
+permissions in that project's own documents.
 
 Update the README and affected references when changing skill behavior. Preserve
 upstream attribution and bundled licenses for retained content. Do not update

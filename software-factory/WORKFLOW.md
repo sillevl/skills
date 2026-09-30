@@ -1,10 +1,11 @@
 # Agent-assisted delivery workflow
 
-This is Sille's personal adaptation of the workflow from
-[michaelshimeles/skills](https://github.com/michaelshimeles/skills). It governs
-work in this collection and can be referenced by a consuming project. For
-Helios Lite, call it the Agent-Assisted Firmware Delivery Workflow, or Helios
-Delivery Workflow for short.
+This workflow is derived from
+[michaelshimeles/skills](https://github.com/michaelshimeles/skills). Apply it only
+when the user explicitly invokes `software-factory` or requests that skill by
+name. It is not default behavior for work in this collection or a consuming
+project. Reading or editing workflow files does not activate its isolation or
+delivery stages.
 
 ## Scope and precedence
 
