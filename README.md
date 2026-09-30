@@ -16,7 +16,7 @@ Each skill is a folder containing `SKILL.md` with frontmatter and instructions, 
 
 ## Scope of this fork
 
-The first adaptation separates a generic workflow core from Pi-specific usage and preserves upstream attribution. The component skills still contain inherited assumptions, including Claude Code and Cursor worktree instructions in `new-feature`. A model-neutral README does not make every bundled skill harness-neutral yet.
+The workflow separates a generic core from Pi-specific usage and preserves upstream attribution. Worktree handling depends on the workspace capabilities actually provided, not a particular harness or model name. The agent verifies an assigned task workspace or creates one when none is provided.
 
 The web screenshot-comparison skill and its upload scripts have been removed. Evidence should fit the change: test output, serial logs, protocol traces, terminal captures or hardware observations. A screenshot comparison table is not a required delivery artifact.
 
@@ -69,7 +69,7 @@ Use it when:
 - Multiple agents (or sessions) work the same repository concurrently
 - You need a consistent branch-per-task convention with safe cleanup
 
-The current skill includes inherited worktree instructions for Claude Code and Cursor. For other harnesses, inspect the assigned workspace before creating a worktree. Isolated edits do not eliminate integration conflicts between branches.
+The skill verifies workspace assignment, branch policy and ownership before creating isolation. If an isolated task worktree is already supplied, it preserves that workspace and leaves harness-managed cleanup to the harness. Otherwise, the agent creates and manages its own task worktree. Isolated edits do not eliminate integration conflicts between branches.
 
 ### [unslop](unslop/SKILL.md)
 

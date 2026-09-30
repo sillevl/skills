@@ -38,8 +38,9 @@ consuming project's review requirements, with no external confidence-score gate.
 ## Workflow
 
 1. **Isolate.** Read `../new-feature/SKILL.md` and follow its branch-selection rules.
-   Find the project's policy, state the starting base and PR target, then create
-   an isolated task branch and worktree. Without project rules or a task override,
+   Find the project's policy and state the starting base and PR target. Verify
+   an assigned isolated task workspace or create one when none is supplied,
+   following the skill's ownership and cleanup rules. Without project rules or a task override,
    the default is `origin/main` with a PR targeting `main`.
 2. **Build.** Read `../code-structure/SKILL.md`. Establish the project's architecture,
    choose cohesive ownership and explicit public contracts, and refactor shared
@@ -108,8 +109,9 @@ wrote or changed, not to prose you didn't touch.
    failed or unavailable requirements. Do not claim approval that has not occurred.
 8. End by presenting the PR URL, verification summary and outstanding work.
 
-Do not merge the PR unless explicitly instructed. Keep the worktree until
-the PR is merged or closed.
+Do not merge the PR unless explicitly instructed. Preserve the task worktree
+until the PR is merged or closed, following the workspace-management rules in
+`new-feature`. Leave harness-managed cleanup to the harness.
 
 ## Pi-specific instructions
 

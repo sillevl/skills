@@ -29,19 +29,26 @@ an integration branch, and never reuse another agent's workspace.
    the new base and target before proceeding. Tags name fixed revisions and are
    not PR target branches.
 
-## Harness deltas — read first
+## Workspace capabilities
 
-- **Claude Code**: the harness creates and manages worktrees itself (under
-  `.claude/worktrees/<name>`). **Skip steps 3–4 below** (no manual
-  `git worktree add` / `remove`), and keep the harness-assigned branch name.
-  Steps 1–2 and 5 still apply.
-- **Cursor-managed worktrees** (branches named `worktree-*`): same idea —
-  keep the assigned branch and worktree, apply steps 2 and 5.
-- Any other harness: follow all steps.
+Inspect the session's workspace assignment and the actual repository state before
+creating a worktree. Use the available Git commands to identify the repository,
+current branch, registered worktrees and uncommitted changes. A tool or product
+name, directory name or branch prefix does not prove that isolation is provided.
 
-Resolve branch selection even when the harness supplies the worktree. If its
-assigned base conflicts with the project's policy, report it before changing
-workspace history.
+- If the harness or user has assigned an isolated task branch and worktree,
+  verify that they belong to this task and satisfy the selected branch policy.
+  Keep the assigned names and location. Skip steps 3–4 below; steps 1–2 and 5
+  still apply. Do not create nested isolation or reset the assigned workspace.
+- If no isolated task workspace is assigned, follow all steps to create one.
+  A shared checkout or integration branch is not an isolated task workspace.
+- If assignment, ownership or the starting base is unclear or conflicts with
+  project policy, ask before changing the affected workspace or its history.
+  Existing uncommitted work must not be assumed to belong to this task.
+
+Record whether workspace creation and cleanup are managed by the harness or by
+the task agent. Resolve branch selection in either case. Inspecting a supplied
+workspace does not authorize changing another agent's branch or files.
 
 ## Steps
 
@@ -64,10 +71,11 @@ workspace history.
      -b <branch-prefix>/<task-name> <selected-remote-base>
    ```
 
-   Use a **gitignored** directory for worktrees (e.g. `.claude/worktrees/`
-   or `.worktrees/`) so they can never be committed by accident, and a
-   consistent branch prefix (e.g. `agent/`). Follow the repo's conventions
-   if it defines them.
+   Follow the repository's worktree-location and branch-naming conventions.
+   For a worktree inside the repository, use a gitignored directory such as
+   `.worktrees/`; a sibling directory outside the repository is another option.
+   Keep a consistent task-branch prefix such as `agent/` when no convention is
+   defined.
 
 5. **Enter and verify**:
 
@@ -128,7 +136,12 @@ the user rather than silently changing it.
   databases, and dependency lockfiles are global. Confirm a port answers
   *your* process (`lsof -i :<port>`) before trusting what it serves, and
   resolve lockfile conflicts by regenerating, never by hand-merging.
-- Keep the worktree until the PR is merged or closed. Cleanup after merge:
+- Keep the worktree until the PR is merged or closed. For harness-managed
+  workspaces, leave cleanup to the harness and follow its lifetime rules. If those
+  rules conflict with preserving unfinished work, report the conflict.
+- For agent-managed workspaces, clean up only the task's own worktree after merge
+  or closure and after confirming it contains no uncommitted work to preserve.
+  Example cleanup after merge:
 
   ```bash
   git worktree remove <worktrees-dir>/<task-name>
