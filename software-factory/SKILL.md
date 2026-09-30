@@ -21,7 +21,11 @@ by name. It is independent of model provider and coding-agent harness.
    `../evidence-driven-testing/` and `../unslop/`. Install these from the same
    workflow version. If a required component cannot be located, report what is
    missing and ask for direction rather than substituting unrelated instructions.
+   The review stage also requires Matt Pocock's separately installed `code-review`
+   skill and its prerequisites. Locate and read that skill at the review stage;
+   do not assume it is bundled here.
 
 This entry point routes to the existing rules; it does not duplicate them or
-start background sessions. Report verification and outstanding work as required
+start background sessions itself. The external review skill uses parallel
+sub-agents when the harness supports its required review process. Report verification and outstanding work as required
 by the workflow. Merge only with explicit user authorization.

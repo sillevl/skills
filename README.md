@@ -17,7 +17,7 @@ The workflow is opt-in through the manual `software-factory` skill. Ordinary req
 
 The web screenshot-comparison skill and its upload scripts have been removed. Evidence should fit the change: test output, serial logs, protocol traces, terminal captures or hardware observations. A screenshot comparison table is not a required delivery artifact.
 
-Branch selection now follows project-specific policy, with `origin/main` and a PR to `main` as the fallback. Overlap handling is now a trial risk-based policy: inspect relevant changes, proceed with compatible independent edits, and ask about unclear compatibility, conflicting behavior or unresolved dependencies. Each task agent owns compatibility with its agreed base; cross-branch coordination and published-history rewrites require user agreement. Verification now focuses on software tests, with no bundled media recorder. Delivery ends with a verification summary and PR handoff, following the consuming project's review requirements rather than a third-party confidence-score gate. The consuming project's architecture, permissions and test-execution policy take precedence over this collection's generic guidance.
+Branch selection now follows project-specific policy, with `origin/main` and a PR to `main` as the fallback. Overlap handling is now a trial risk-based policy: inspect relevant changes, proceed with compatible independent edits, and ask about unclear compatibility, conflicting behavior or unresolved dependencies. Each task agent owns compatibility with its agreed base; cross-branch coordination and published-history rewrites require user agreement. Verification now focuses on software tests, with no bundled media recorder. Delivery includes Matt Pocock's separate Standards and Spec review, followed by verification and review summaries in the PR handoff. Project review requirements still apply; there is no third-party confidence-score gate. The consuming project's architecture, permissions and test-execution policy take precedence over this collection's generic guidance.
 
 ## Available skills
 
@@ -79,7 +79,13 @@ Use it when:
 
 ## Workflow
 
-[`software-factory/WORKFLOW.md`](software-factory/WORKFLOW.md) is the authoritative workflow for this collection; [`AGENTS.md`](AGENTS.md) makes its activation explicitly opt-in, including for repository work. It connects isolate (`new-feature`), build (`code-structure`), prove (`evidence-driven-testing`) and ship with a verification summary and PR handoff, with `unslop` for human-facing text. Project review and merge requirements still apply; opening a PR is not review approval.
+[`software-factory/WORKFLOW.md`](software-factory/WORKFLOW.md) is the authoritative workflow for this collection; [`AGENTS.md`](AGENTS.md) makes its activation explicitly opt-in, including for repository work. It connects isolate (`new-feature`), build (`code-structure`), prove (`evidence-driven-testing`) and review/ship using Matt Pocock's external `code-review` skill and a PR handoff, with `unslop` for human-facing text. Project review and merge requirements still apply; opening a PR is not review approval.
+
+Within an explicitly invoked factory run, normal task commits and pushes remain
+enabled unless project or task instructions restrict them. Published-history
+rewrites and merging still need the applicable authorization. Delivery verifies
+the destination and explicitly targets the agreed repository when creating a PR,
+rather than relying on fork defaults.
 
 To use it in another project, reference or adapt it alongside that project's existing instructions. Keep project architecture and safety rules authoritative rather than replacing them with this file. Read the workflow and relevant skills instead of pasting an older upstream prompt into each task.
 
@@ -93,6 +99,25 @@ and permission to write to the selected installation directory.
 Install the delivery workflow's five skills: `software-factory`, `new-feature`,
 `code-structure`, `evidence-driven-testing` and `unslop`. The entry point needs its
 component skills and bundled `WORKFLOW.md` from the same version.
+
+### External review dependency
+
+Install [Matt Pocock's `code-review`](https://github.com/mattpocock/skills)
+separately if it is not already present:
+
+```bash
+npx skills add mattpocock/skills --global --agent pi --skill code-review
+```
+
+Keep it managed from its original source rather than vendoring it here. The
+review skill requires a fixed comparison point, a requirements source and
+parallel sub-agent capability, and includes project issue-tracker setup guidance.
+Read its installed instructions for current prerequisites. If the harness cannot
+perform the required review, the factory reports the gap and asks for direction.
+It does not fabricate an independent review or silently replace it.
+
+Removal or update commands for this collection's five skills below do not remove
+or update this external dependency. Review dependency updates separately.
 
 ### Install from a local checkout
 

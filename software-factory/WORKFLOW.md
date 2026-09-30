@@ -42,7 +42,9 @@ consuming project's review requirements, with no external confidence-score gate.
    Find the project's policy and state the starting base and PR target. Verify
    an assigned isolated task workspace or create one when none is supplied,
    following the skill's ownership and cleanup rules. Without project rules or a task override,
-   the default is `origin/main` with a PR targeting `main`.
+   the default is `origin/main` with a PR targeting `main`. Record the resolved
+   starting commit SHA, intended repository and task requirements for review and
+   delivery; a moving branch name alone is not a fixed review point.
 2. **Build.** Read `../code-structure/SKILL.md`. Establish the project's architecture,
    choose cohesive ownership and explicit public contracts, and refactor shared
    behavior only when justified. Service-layer extraction is an option, not a
@@ -53,11 +55,39 @@ consuming project's review requirements, with no external confidence-score gate.
    project permission or explicit authorization. Report the tested state, commands,
    environment, outcomes and evidence source. Hand off unexecuted checks with their commands
    and distinguish software verification from physical validation.
-4. **Ship.** Open the PR with the software-test verification summary and any
-   relevant supplementary evidence. Screenshots and video are not required.
-   State missing verification explicitly. Follow the project's review requirements
-   and report their current status; opening a PR is not approval to merge.
-   Finish by presenting the PR URL and any outstanding checks or review.
+4. **Review and ship.** Follow the review handoff below, then open the PR with
+   the software-test verification summary, review results and any relevant
+   supplementary evidence. Screenshots and video are not required. State missing
+   verification explicitly. Follow the project's review requirements and report
+   their current status; opening a PR is not approval to merge. Finish by
+   presenting the PR URL and any outstanding checks or review.
+
+## Review handoff
+
+Use Matt Pocock's `code-review` skill from
+[mattpocock/skills](https://github.com/mattpocock/skills). It is an external
+installation, not a bundled copy of this collection. Locate its installed
+`SKILL.md`, verify the intended source and read it fully before review.
+
+- Supply the task's fixed starting commit SHA and the requirements/spec source.
+  Review task commits against that fixed point, not a guessed `main` or a moving
+  branch tip. Commit the intended changes locally before review so a HEAD-based
+  review includes them; identify any outstanding uncommitted changes separately.
+- Follow the skill's separate Standards and Spec reviews and preserve both in
+  the handoff. Project standards override generic smell heuristics. Ensure the
+  task requirements are available as a source the reviewers can inspect.
+- Check the skill's prerequisites, including its issue-tracker guidance and
+  parallel sub-agent capability. If requirements cannot be met, report the
+  missing capability and ask for direction. Do not silently substitute a
+  self-review or claim independent reviewers ran when they did not.
+- Address confirmed findings within task scope. Ask about findings that require
+  new product decisions, architectural deviations or changes outside scope.
+  Recheck affected behavior under the project's testing policy and review the
+  updated commits after fixes. If review or fixes cannot finish, report the
+  remaining findings and ask rather than claiming a completed review.
+
+This review provides findings, not a numerical confidence gate or permission to
+merge. Project-required human review and CI remain separate requirements.
 
 ## Writing for humans
 
@@ -101,14 +131,23 @@ wrote or changed, not to prose you didn't touch.
    policy, use the task's selected base rather than hard-coded `origin/main`.
    Resolve any changed dependency or target first. Rerun checks only within the
    project's authorization policy.
-5. Push (`git push -u origin <branch>`; after rebasing an already-pushed
-   branch, `--force-with-lease`).
-6. Open the PR. The body must explain what changed, how it was tested (every
-   claim backed by evidence), any missing verification, and risks or follow-up
-   work. Apply `unslop` to the title and body before posting.
-7. Report the status of project-required checks and review, including pending,
+5. Complete the review handoff above before the delivery push. Commit review
+   fixes and update verification where needed.
+6. Normal task commits and pushes are permitted within an explicitly selected
+   factory run unless project or task instructions restrict them. Verify the
+   destination remote and branch match the agreed repository before pushing.
+   Rewriting published history still requires agreement under the integration
+   rules; use `--force-with-lease` only when authorized.
+7. Open the PR explicitly in the agreed repository and targeting the agreed
+   branch. For GitHub, pass `--repo <owner/repository>` and `--base <target>` to
+   `gh pr create`; do not rely on fork/upstream defaults or a generic compare
+   link. Ask before changing the destination. The body must explain what changed,
+   how it was tested, Standards and Spec findings, missing verification, and
+   risks or follow-up work. Apply `unslop` before posting.
+8. Report the status of project-required checks and review, including pending,
    failed or unavailable requirements. Do not claim approval that has not occurred.
-8. End by presenting the PR URL, verification summary and outstanding work.
+9. End by presenting the PR URL, verification and review summaries, and outstanding
+   work.
 
 Do not merge the PR unless explicitly instructed. Preserve the task worktree
 until the PR is merged or closed, following the workspace-management rules in
@@ -155,4 +194,5 @@ workflow for each consuming project.
 | Skill | Source |
 |---|---|
 | `new-feature`, `code-structure`, `evidence-driven-testing` | this repo |
+| `code-review` | External dependency from [mattpocock/skills](https://github.com/mattpocock/skills); install separately |
 | `unslop` | this repo, vendored from [cursor/plugins (pstack)](https://github.com/cursor/plugins/tree/main/pstack/skills/unslop); frontmatter edited so agents apply it unprompted (`disable-model-invocation` dropped, description scoped to text the agent writes or edits for people), body untouched |
