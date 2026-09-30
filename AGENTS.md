@@ -23,5 +23,9 @@ Update the README and affected references when changing skill behavior. Preserve
 upstream attribution and bundled licenses for retained content. Do not update
 user-level installed copies or publish changes unless requested.
 
+For collection changes, run [the documented checks](README.md#maintaining-this-collection).
+Use [the trial guide](docs/trials.md) when validating workflow behavior; collection
+checks alone are not behavior evidence.
+
 See [Pi-specific instructions](software-factory/WORKFLOW.md#pi-specific-instructions)
 for invocation and skill discovery.

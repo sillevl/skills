@@ -36,6 +36,12 @@ handling now uses a trial risk assessment rather than a blanket stop.
 Verification focuses on software tests. Delivery uses a PR handoff and the
 consuming project's review requirements, with no external confidence-score gate.
 
+## Preflight
+
+Before isolation, read [the prerequisites guide](PREREQUISITES.md), check the
+capabilities available in the current session and disclose known gaps. Resolve
+missing prerequisites or agree on partial work before starting affected stages.
+
 ## Workflow
 
 1. **Isolate.** Read `../new-feature/SKILL.md` and follow its branch-selection rules.

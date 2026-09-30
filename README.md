@@ -19,7 +19,22 @@ The web screenshot-comparison skill and its upload scripts have been removed. Ev
 
 Branch selection now follows project-specific policy, with `origin/main` and a PR to `main` as the fallback. Overlap handling is now a trial risk-based policy: inspect relevant changes, proceed with compatible independent edits, and ask about unclear compatibility, conflicting behavior or unresolved dependencies. Each task agent owns compatibility with its agreed base; cross-branch coordination and published-history rewrites require user agreement. Verification now focuses on software tests, with no bundled media recorder. Delivery includes Matt Pocock's separate Standards and Spec review, followed by verification and review summaries in the PR handoff. Project review requirements still apply; there is no third-party confidence-score gate. The consuming project's architecture, permissions and test-execution policy take precedence over this collection's generic guidance.
 
-## Available skills
+## Software factory skills
+
+The factory uses these bundled skills for defined responsibilities. Their detailed
+instructions remain in their own files; this overview does not replace them.
+
+| Skill | Factory responsibility | Expected outcome |
+| --- | --- | --- |
+| `software-factory` | Manual entry point and stage routing | A task follows the maintained workflow and project permissions |
+| `new-feature` | Branch selection, workspace isolation and overlap assessment | An owned task workspace with an agreed base, PR target and integration plan |
+| `code-structure` | Architecture-aware implementation guidance | Cohesive ownership and public contracts within project boundaries |
+| `evidence-driven-testing` | Test selection, regression coverage, compilation and result reporting | A verification summary with evidence sources and explicit gaps |
+| `unslop` | Editing human-facing prose | Clear task reports, documentation and commit/PR text |
+
+The factory also requires Matt Pocock's external `code-review` skill for separate
+Standards and Spec review before delivery. It is not bundled or owned here; see
+[the review dependency and its prerequisites](#external-review-dependency).
 
 ### [software-factory](software-factory/SKILL.md)
 
@@ -77,6 +92,55 @@ Use it when:
 
 > Vendored from [cursor/plugins (pstack)](https://github.com/cursor/plugins/tree/main/pstack/skills/unslop) (MIT, license included in the folder). The body matches upstream; the frontmatter has two edits so agents apply the skill on their own instead of waiting for a typed `/unslop`. We dropped the `disable-model-invocation: true` line, and the description now names the trigger (text you write or edit for a human reader) in place of upstream's "any writing. Must always apply.", so auto-invocation matches the scope `AGENTS.md` gives it. Restore the flag if you want slash-command-only behavior.
 
+## Optional companion skills
+
+These references point to useful skills from
+[Matt Pocock's collection](https://github.com/mattpocock/skills). Keep them installed
+and updated from their original source rather than copying them here. They are
+not additional factory dependencies or mandatory stages.
+
+### Requirements, planning and exploration
+
+| Skill | Useful for |
+| --- | --- |
+| `grilling` | Resolving open requirements and design decisions through an interview |
+| `grill-with-docs` | Clarifying decisions while maintaining ADRs and glossary documentation |
+| `wayfinder` | Mapping larger work into decision tickets and resolving dependencies over multiple sessions |
+| `to-spec` | Turning an agreed conversation into a specification |
+| `to-tickets` | Breaking a plan or specification into executable tickets with blocking edges |
+| `prototype` | Exploring a design question with a throwaway implementation |
+| `research` | Investigating uncertain facts against primary sources |
+
+### Implementation and problem-solving
+
+| Skill | Useful for |
+| --- | --- |
+| `codebase-design` | Exploring interface depth, testability and seam placement |
+| `tdd` | An explicitly chosen test-first implementation approach |
+| `diagnosing-bugs` | Building a reproducible feedback loop for difficult failures |
+| `resolving-merge-conflicts` | Handling an active merge or rebase conflict |
+| `wizard` | Guiding a human through setup steps the agent cannot perform itself |
+| `implement` | An alternative spec/ticket-driven execution process; inspect its rules before combining it with the factory |
+
+### Maintenance and continuity
+
+| Skill | Useful for |
+| --- | --- |
+| `writing-for-agents` | Maintaining predictable, concise agent instructions |
+| `handoff` | Preparing a fresh session to continue without duplicating existing artifacts |
+| `retro` | Reviewing completed sessions and proposing improvements to the agent environment |
+
+Consult a companion when its purpose fits the task or the user explicitly selects
+it, not simply because it appears in this list. This reference does not change
+upstream frontmatter, invocation settings or project permissions. Read the actual
+skill before use: tracker publication, human checkpoints, sub-agents and other
+capabilities may have prerequisites or side effects. Preserve project vocabulary
+and architecture; resolve conflicting execution rules before combining workflows.
+
+Other skills in Matt Pocock's collection remain available independently; this
+list is a reference selection, not a replacement catalog or an instruction to
+install everything.
+
 ## Workflow
 
 [`software-factory/WORKFLOW.md`](software-factory/WORKFLOW.md) is the authoritative workflow for this collection; [`AGENTS.md`](AGENTS.md) makes its activation explicitly opt-in, including for repository work. It connects isolate (`new-feature`), build (`code-structure`), prove (`evidence-driven-testing`) and review/ship using Matt Pocock's external `code-review` skill and a PR handoff, with `unslop` for human-facing text. Project review and merge requirements still apply; opening a PR is not review approval.
@@ -88,6 +152,33 @@ the destination and explicitly targets the agreed repository when creating a PR,
 rather than relying on fork defaults.
 
 To use it in another project, reference or adapt it alongside that project's existing instructions. Keep project architecture and safety rules authoritative rather than replacing them with this file. Read the workflow and relevant skills instead of pasting an older upstream prompt into each task.
+
+## Maintaining this collection
+
+Run the collection checks before handing off changes. They need Python 3.10 or
+newer and the pinned development dependency; skill installation does not need
+Python or PyYAML.
+
+```bash
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-dev.txt
+.venv/bin/python -m unittest discover -s tests -v
+.venv/bin/python tools/check_collection.py
+git diff --check
+```
+
+Run these from the repository root. The checker validates required skill files,
+YAML frontmatter, matching names, manual-only flags, bundled references and local
+inline Markdown links with ATX heading anchors. It rejects removed skill
+directories and their `/skill:` invocations. External URLs, reference-style links
+and arbitrary prose/code file references are outside its scope. GitHub Actions
+runs the same tests and checks on pushes and pull requests.
+
+For runtime capability checks, use the bundled
+[factory prerequisites guide](software-factory/PREREQUISITES.md). For behavioral
+validation, use [the trial scenarios and record format](docs/trials.md). Collection
+checks cannot prove that an agent follows the workflow. No trial or review result
+is implied by a successful packaging check.
 
 ## Installation
 
